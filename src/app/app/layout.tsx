@@ -1,5 +1,9 @@
+import Sidebar from "./_components/sibebar";
+
 export default function AppLayout() {
     return (
-        <h1>Ola</h1>
+        <div>
+            <Sidebar/>
+        </div>
     )
 }

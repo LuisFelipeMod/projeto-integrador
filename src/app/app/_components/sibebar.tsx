@@ -1,11 +1,11 @@
 "use client"
 
-import { Avatar, Button, Listbox, ListboxItem } from "@nextui-org/react";
-import { AreaChart, LogOut, PencilRuler, Users } from 'lucide-react';
-import { Tooltip } from "@nextui-org/react";
-import { Settings } from 'lucide-react';
-import ProfileModal from "./profile-modal";
 import Logo from "@/assets/logo";
+import { Button, Tooltip } from "@nextui-org/react";
+import { AreaChart, Home, LogOut, LucideIcon, PencilRuler, Settings, Users } from 'lucide-react';
+import ProfileModal from "./profile-modal";
+import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/cn";
 
 export default function Sidebar() {
     return (
@@ -17,15 +17,10 @@ export default function Sidebar() {
                 </div>
 
                 <div className="px-2 space-y-2">
-                    <Button className="bg-dark-300 text-light-100 w-full flex justify-start" startContent={<AreaChart />}>
-                        Dashboard
-                    </Button>
-                    <Button className="bg-dark-300 text-light-100 w-full flex justify-start" startContent={<PencilRuler />}>
-                        Ordem de serviço
-                    </Button>
-                    <Button className="bg-dark-300 text-light-100 w-full flex justify-start" startContent={<Users />}>
-                        Usuários
-                    </Button>
+                    <SidebarItem label="Home" icon={Home} path="" />
+                    <SidebarItem label="Dashboard" icon={AreaChart} path="dashboard" />
+                    <SidebarItem label="Ordem de serviço" icon={PencilRuler} path="services-orders" />
+                    <SidebarItem label="Usuários" icon={Users} path="users" />
                 </div>
             </div>
 
@@ -45,5 +40,22 @@ export default function Sidebar() {
                 </div>
             </div>
         </aside>
+    )
+}
+
+function SidebarItem({ label, icon: Icon, path }: { label: string, path: string, icon: LucideIcon }) {
+    const pathname = usePathname()
+    const router = useRouter()
+
+    return (
+        <Button
+            onClick={() => router.push(`app/${path}`)}
+            className={cn("bg-transparent text-light-100 w-full flex justify-start transition-all duration-300 hover:bg-dark-200",
+                { "bg-dark-200": pathname.includes(path) }
+            )}
+            startContent={<Icon />}
+        >
+            {label}
+        </Button>
     )
 }

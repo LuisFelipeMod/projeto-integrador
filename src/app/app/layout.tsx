@@ -1,9 +1,14 @@
 import Sidebar from "./_components/sibebar";
 
-export default function AppLayout() {
+export default function AppLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
     return (
-        <div>
-            <Sidebar/>
-        </div>
+        <main className="flex">
+            <Sidebar />
+            {children}
+        </main>
     )
 }

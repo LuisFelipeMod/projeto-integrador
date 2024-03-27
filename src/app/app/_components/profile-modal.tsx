@@ -9,11 +9,28 @@ import {
   Button,
   useDisclosure,
   Avatar,
+  Input,
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
 } from "@nextui-org/react";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { register } from "module";
+
+const formSchema = z.object({
+  name: z.string(),
+  email: z.string().email()
+})
 
 export default function ProfileModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema)
+  })
 
   return (
     <>
@@ -31,19 +48,25 @@ export default function ProfileModal() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Editar
-              </ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Editar</ModalHeader>
               <ModalBody>
                 <Tabs aria-label="Options">
-                  <Tab key="photos" title="Perfil">
+                  <Tab key="profile" title="Perfil">
                     <Card>
                       <CardBody>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
+                        <form className="space-y-2">
+                          <Input
+                            {...form.register("name")}
+                            type="text"
+                            label="Nome"
+                          />
+
+                          <Input
+                            {...form.register("email")}
+                            type="email"
+                            label="Email"
+                          />
+                        </form>
                       </CardBody>
                     </Card>
                   </Tab>

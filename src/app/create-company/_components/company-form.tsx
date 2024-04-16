@@ -3,7 +3,7 @@
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { useState } from 'react';
-import paperClip from '../../../../public/paperclip.svg'
+import { Paperclip } from 'lucide-react';
 
 
 const itens = [
@@ -12,7 +12,6 @@ const itens = [
   ["file", "Selecione a imagem de perfil", ""],
 ];
 
-console.log(paperClip)
 
 export default function CompanyForm() {
   const [file, setFile] = useState(null);
@@ -53,7 +52,7 @@ export default function CompanyForm() {
         return (
           <div className="pt-5 pb-5 w-5/12 flex justify-center" key={key}>
             <Button color="default" variant="solid">
-              <img src={paperClip.src} alt="" />
+              <Paperclip size={96}/>
               <label htmlFor="file">{ file ? file : label}</label>
               <input
                 id="file"

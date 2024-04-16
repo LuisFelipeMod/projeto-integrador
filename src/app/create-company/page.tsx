@@ -4,9 +4,9 @@ import CompanyForm from "./_components/company-form";
 
 export default function CreateCompany() {
   return (
-    <div className="h-screen flex justify-center"> 
+    <main className="h-screen flex justify-center"> 
         <CompanyAside/>
         <CompanyForm/>
-    </div>
+    </main>
   );
 }

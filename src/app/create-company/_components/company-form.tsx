@@ -29,7 +29,7 @@ export default function CompanyForm() {
   };
 
   return (
-    <div className="w-7/12 px-16 flex flex-col items-center" style={{padding: "8.188rem 7rem"}}>
+    <section className="w-7/12 px-16 flex flex-col items-center" style={{padding: "8.188rem 7rem"}}>
       <h2 className="text-dark-300 text-2xl pt-5 font-bold text-center mb-8">Dados da empresa</h2>
       {itens.map((item, key) => {
         const type = item[0];
@@ -70,6 +70,6 @@ export default function CompanyForm() {
       <div className="pt-5 pb-5 w-5/12 flex justify-center">
         <Button fullWidth={true} color="default" variant="solid">Cadastrar</Button>
       </div>
-    </div>
+    </section>
   );
 }

@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 
 export default function Sidebar() {
     return (
-        <aside className="h-screen w-80 bg-dark-300 flex flex-col justify-between">
+        <aside className="h-screen min-w-80 max-w-80 bg-dark-300 flex flex-col justify-between">
             <div>
                 <div className="p-4 space-y-4">
                     <Logo />

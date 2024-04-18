@@ -32,7 +32,6 @@ export default function Sidebar() {
             icon={PencilRuler}
             path="services-orders"
           />
-          <SidebarItem label="Usuários" icon={Users} path="users" />
           <SidebarItem label="Funcionários" icon={Users} path="employee" />
         </div>
       </div>

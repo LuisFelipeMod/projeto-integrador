@@ -6,7 +6,9 @@ import { toast } from "sonner";
 
 export default function InviteEmployee() {
   const onClick = () => {
-    navigator.clipboard.writeText("localhost:3000/app/createEmployee/teste123");
+    navigator.clipboard.writeText(
+      `${window.location.origin}/auth-employee?company=teste123`
+    );
     toast.success("Link copiado para à área de transferência.");
   };
 

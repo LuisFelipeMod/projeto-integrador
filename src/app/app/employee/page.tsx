@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 
 import InviteEmployee from "./_components/invite-employee";
+import InviteEmployeeModal from "./_components/invite-employee-modal";
 
 export default function Employee() {
   return (

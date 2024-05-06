@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.0",
+    "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.10",
     "@nextui-org/table": "^2.0.28",
@@ -23,7 +24,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.0",
     "sonner": "^1.4.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

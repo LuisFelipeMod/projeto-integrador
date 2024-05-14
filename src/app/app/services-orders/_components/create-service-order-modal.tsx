@@ -19,39 +19,42 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { register } from "module";
 
 const formSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+  client_cpf_cnpj: z.string(),
+  type: z.string(),
+  description: z.string(),
+  material_value: z.number(),
+  labor_value: z.number(),
 });
 
-export default function InviteEmployee() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+type CreateFormSchema = z.infer<typeof formSchema>;
+
+export default function CreateServiceOrder() {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
 
   const [percent, setPercent] = useState(0);
 
   const numberOfPage = 2;
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  // const form = useForm<z.infer<typeof formSchema>>({
+  //   resolver: zodResolver(formSchema),
+  // });
+
+  const form = useForm<CreateFormSchema>({
     resolver: zodResolver(formSchema),
   });
 
   const alterPage = async () => {
     if (page === numberOfPage) {
-      form.handleSubmit(async (data) => {
-        const body = {
-          ownerId: user!.id,
-          ...data,
-        };
+      const data = form.getValues();
+      await fetch("/api/service-order", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
 
-        // await fetch("/api/company", {
-        //   method: "POST",
-        //   body: JSON.stringify(body),
-        // });
-      })();
-
+      onClose();
       // setIsOpen(false);
       return;
     }
@@ -66,27 +69,31 @@ export default function InviteEmployee() {
         return (
           <div className="space-y-2">
             <div className="space-y-1">
-              <label className="font-semibold" htmlFor="cnpj-cpf-input">
+              <label className="font-semibold" htmlFor="client-cpf-cnpj-input">
                 CPF / CNPJ do Cliente
               </label>
               <Input
-                id="cnpj-cpf-input"
+                id="client-cpf-cnpj-input"
                 size="lg"
-                {...form.register("cnpj_cpf")}
+                {...form.register("client_cpf_cnpj")}
               />
             </div>
 
             <div className="space-y-1">
-              <label className="font-semibold" htmlFor="razao-social-input">
+              <label className="font-semibold" htmlFor="type-input">
                 Tipo de Serviço
               </label>
-              <Input id="razao-social-input" size="lg" />
+              <Input id="type-input" size="lg" {...form.register("type")} />
             </div>
             <div className="space-y-1">
-              <label className="font-semibold" htmlFor="nome-fantasia-input">
+              <label className="font-semibold" htmlFor="description-input">
                 Descrição do serviço
               </label>
-              <Input id="nome-fantasia-input" size="lg" />
+              <Input
+                id="description-input"
+                size="lg"
+                {...form.register("description")}
+              />
             </div>
           </div>
         );
@@ -95,27 +102,25 @@ export default function InviteEmployee() {
         return (
           <div className="space-y-2">
             <div className="space-y-1">
-              <label className="font-semibold" htmlFor="cnpj-cpf-input">
+              <label className="font-semibold" htmlFor="material-value-input">
                 Valor do Material
               </label>
               <Input
-                id="cnpj-cpf-input"
+                id="material-value-input"
                 size="lg"
-                {...form.register("cnpj_cpf")}
+                {...form.register("material_value")}
               />
             </div>
 
             <div className="space-y-1">
-              <label className="font-semibold" htmlFor="razao-social-input">
+              <label className="font-semibold" htmlFor="labor-value-input">
                 Valor da mão de obra
               </label>
-              <Input id="razao-social-input" size="lg" />
-            </div>
-            <div className="space-y-1">
-              <label className="font-semibold" htmlFor="nome-fantasia-input">
-                Valor total do serviço
-              </label>
-              <Input id="nome-fantasia-input" size="lg" />
+              <Input
+                id="labor-value-input"
+                size="lg"
+                {...form.register("labor_value")}
+              />
             </div>
           </div>
         );
@@ -143,7 +148,7 @@ export default function InviteEmployee() {
                 <Button
                   form="create-company-form"
                   color="primary"
-                  onPress={alterPage}
+                  onPress={() => alterPage()}
                 >
                   {page === numberOfPage ? "Cadastrar" : "Proximo"}
                   <ChevronRight />

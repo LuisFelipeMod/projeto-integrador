@@ -70,3 +70,14 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model ServiceOrder {
+  id              String  @id @default(cuid())
+  client_cpf_cnpj String
+  type            String
+  description     String
+  material_value  Decimal
+  labor_value     Decimal
+
+  @@map("services-orders")
+}

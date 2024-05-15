@@ -11,9 +11,10 @@ import {
   Settings,
   Users,
 } from "lucide-react";
-import ProfileModal from "./profile-modal";
+import SelectCompanyModal from "./select-company/select-company-modal";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
+import SettingsModal from "./settings-modal";
 
 export default function Sidebar() {
   return (
@@ -37,13 +38,9 @@ export default function Sidebar() {
       </div>
 
       <div className="border-t border-t-dark-100 flex gap-2 p-2 justify-between text-light-200 items-center">
-        <ProfileModal />
+        <SelectCompanyModal />
         <div>
-          <Tooltip content="Configuração">
-            <Button isIconOnly className="bg-dark-300 text-light-100">
-              <Settings />
-            </Button>
-          </Tooltip>
+          <SettingsModal />
           <Tooltip content="Sair da plataforma">
             <Button isIconOnly className="bg-dark-300 text-light-100">
               <LogOut />

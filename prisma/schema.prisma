@@ -78,6 +78,7 @@ model ServiceOrder {
   description     String
   material_value  Decimal
   labor_value     Decimal
+  status          String  @default("Pendente")
 
   @@map("services-orders")
 }

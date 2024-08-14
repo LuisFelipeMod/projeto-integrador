@@ -10,8 +10,8 @@
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
 /build
@@ -37,3 +37,5 @@ next-env.d.ts
 
 dev.db
 .env
+.turbo
+dist/

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Projeto Integrador OSCEL",
   "scripts": {
-    "dev": "turbo run dev"
+    "dev": "dotenv -- turbo run dev",
+    "db:migrate": "dotenv -e ../../.env -- turbo run db:migrate"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,7 @@
   },
   "homepage": "https://github.com/Marcelo-maga/projeto-integrador#readme",
   "devDependencies": {
+    "dotenv-cli": "^7.4.2",
     "turbo": "^2.0.12"
   },
   "packageManager": "npm@10.8.1",

@@ -60,7 +60,7 @@ CREATE TABLE "services-orders" (
     "description" TEXT NOT NULL,
     "material_value" DECIMAL NOT NULL,
     "labor_value" DECIMAL NOT NULL,
-    "status" TEXT NOT NULL
+    "status" TEXT NOT NULL DEFAULT 'Pendente'
 );
 
 -- CreateIndex

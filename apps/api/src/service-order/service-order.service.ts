@@ -52,6 +52,23 @@ export class ServiceOrderService {
     }
   }
 
+  async updateServiceOrderStatus(id: string, { status }: { status: string }) {
+    try {
+      const serviceOrder = await this.prismaService.serviceOrder.update({
+        where: {
+          id,
+        },
+        data: {
+          status
+        },
+      });
+
+      return serviceOrder;
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  }
+
   async remove(id: string) {
     try {
       const serviceOrder = await this.prismaService.serviceOrder.delete({

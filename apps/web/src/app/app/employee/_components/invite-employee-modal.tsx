@@ -1,24 +1,23 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
   Avatar,
-  Input,
-  Tabs,
-  Tab,
+  Button,
   Card,
   CardBody,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Tab,
+  Tabs,
+  useDisclosure,
 } from "@nextui-org/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { register } from "module";
 
 const formSchema = z.object({
   name: z.string(),

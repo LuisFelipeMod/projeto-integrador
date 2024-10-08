@@ -1,48 +1,43 @@
 "use client";
 
-import { Plus, Clipboard, Send } from "lucide-react";
-import { toast } from "sonner";
-
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-  Input,
-  Divider,
-} from "@nextui-org/react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { register } from "module";
+import {
+  Button, Divider, Input, Modal, ModalBody, ModalContent,
+  ModalHeader, Snippet, Tooltip, useDisclosure
+} from "@nextui-org/react";
+import { Plus, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const formSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+const inviteEmployeeSchema = z.object({
+  email: z.string().email("Informe um email válido"),
 });
 
-export default function InviteEmployee() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+type InviteEmployeeForm = z.infer<typeof inviteEmployeeSchema>;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export default function InviteEmployee() {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+  const form = useForm<InviteEmployeeForm>({
+    resolver: zodResolver(inviteEmployeeSchema),
   });
 
-  const onClick = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/auth-employee?company=teste123`
-    );
-    toast.success("Link copiado para à área de transferência.");
+  const onSubmit = async (data: InviteEmployeeForm) => {
+    console.log(data);
+
+    form.reset();
+    onClose();
   };
+
+  const invalidEmailField = form.formState.errors.email;
 
   return (
     <>
-      <Button onPress={onOpen} className="bg-green-400 text-white">
-        <Plus />
-      </Button>
+      <Tooltip content="Convide novos funcionários">
+        <Button onPress={onOpen} color="primary">
+          <Plus />
+        </Button>
+      </Tooltip>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent className="pt-3 pb-10">
           {(onClose) => (
@@ -51,21 +46,11 @@ export default function InviteEmployee() {
                 Convidar Funcionário
               </ModalHeader>
               <ModalBody>
-                <div className="flex flex-col gap-y-2">
-                  <div className="flex gap-2">
-                    <Input
-                      isReadOnly
-                      defaultValue={`${window.location.origin}/auth-employee?company=teste123`}
-                      label="Copiar Link de convite"
-                      labelPlacement="outside"
-                    />
-                    <Button
-                      onPress={onClick}
-                      className="bg-blue-400 text-white self-end"
-                    >
-                      <Clipboard />
-                    </Button>
-                  </div>
+                <div className="flex flex-col gap-y-3">
+                  <Snippet symbol="">
+                    {`${window.location.origin}/auth-employee?company=teste123`}
+                  </Snippet>
+
                   <div className="grid grid-cols-[5fr_1fr_5fr] items-center">
                     <Divider className="bg-zinc-400" />
                     <h2 className="text-center text-xs text-zinc-400 font-bold">
@@ -73,26 +58,25 @@ export default function InviteEmployee() {
                     </h2>
                     <Divider className="bg-zinc-400" />
                   </div>
-                  <div className="flex gap-2">
+
+                  <form
+                    className="flex w-full gap-2"
+                    onSubmit={form.handleSubmit(onSubmit)}
+                  >
                     <Input
                       placeholder="E-mail do Funcionário"
-                      label="E-mail"
-                      labelPlacement="outside"
+                      {...form.register("email")}
+                      isInvalid={invalidEmailField ? true : false}
+                      errorMessage={form.formState.errors.email?.message}
                     />
-                    <Button
-                      onPress={onClick}
-                      className="bg-green-400 text-white self-end"
-                    >
-                      <Send />
-                    </Button>
-                  </div>
+                    <Tooltip content="Mande um email para ele!!">
+                      <Button type="submit" color="primary">
+                        <Send />
+                      </Button>
+                    </Tooltip>
+                  </form>
                 </div>
               </ModalBody>
-              {/* <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Cancelar
-                </Button>
-              </ModalFooter> */}
             </>
           )}
         </ModalContent>

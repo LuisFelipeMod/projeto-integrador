@@ -15,7 +15,7 @@ import InviteEmployeeModal from "./_components/invite-employee-modal";
 
 export default function Employee() {
   return (
-    <main className="flex flex-col w-screen p-5 gap-4 items-end">
+    <main className="flex flex-col p-5 gap-4 items-end">
       <div className="w-full flex items-center justify-between">
         <h1 className="font-bold text-2xl text-zinc-800">Funcionários</h1>
         <InviteEmployee />

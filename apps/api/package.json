@@ -21,12 +21,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "database": "*",
     "@nestjs/common": "^10.0.0",
-    "@nestjs/mapped-types": "*",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.19.0",
+    "database": "*",
+    "nodemailer": "^6.9.15",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
   },
@@ -37,6 +38,7 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.16",
     "@types/supertest": "^6.0.0",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",

@@ -82,4 +82,27 @@ export class ServiceOrderService {
       console.log("error: " + error);
     }
   }
+
+  async getProfitsAndLoss() {
+    try {
+      console.log("profitsAndLoss")
+      const profitsAndLoss = await this.prismaService.serviceOrder.aggregate({
+        _sum: {
+          labor_value: true,
+          material_value: true
+        }
+      })
+
+      const data = {
+        mao_de_obra: Number(profitsAndLoss._sum.labor_value),
+        material: Number(profitsAndLoss._sum.material_value),
+        lucro: Number(profitsAndLoss._sum.labor_value) - Number(profitsAndLoss._sum.material_value)
+      }
+
+      return data
+    } catch (error) {
+      console.log("error: " + error);
+
+    }
+  }
 }

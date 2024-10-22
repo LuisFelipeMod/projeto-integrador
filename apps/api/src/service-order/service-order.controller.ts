@@ -17,6 +17,10 @@ export class ServiceOrderController {
     return this.serviceOrderService.findAll();
   }
 
+  @Get('profits-and-loss')
+  getProfitsAndLoss() {
+    return this.serviceOrderService.getProfitsAndLoss();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.serviceOrderService.findOne(id);

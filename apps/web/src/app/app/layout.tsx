@@ -2,7 +2,7 @@
 
 import CreateCompanyModal from "./_components/create-company-modal";
 import Sidebar from "./_components/sibebar";
-import { useUserStore } from "./stores/user-store";
+import { useUserStore } from "@/stores/user-store";
 
 export default function AppLayout({
     children,
@@ -15,9 +15,11 @@ export default function AppLayout({
 
     return (
         <>
-            <main className="flex">
+            <main className="grid grid-cols-[320px_1fr]">
                 <Sidebar />
-                {children}
+                <div className="">
+                    {children}
+                </div>
             </main>
 
             <CreateCompanyModal totalCompanyInUser={user!.companies_owner.length} />

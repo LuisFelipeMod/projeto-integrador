@@ -12,29 +12,23 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useUserStore } from "../../stores/user-store";
+import { useUserStore } from "@/stores/user-store";
 import { DataTable } from "./data-table";
 import { Crown, User } from "lucide-react";
 import { columns } from "./columns";
-import { useCompanyStore } from "../../stores/company-store";
+import { useCompanyStore } from "@/stores/company-store";
 import { useState } from "react";
-
-export interface Company {
-  id: string;
-  cnpj_cpf: string;
-  name: string;
-  isOwner: boolean;
-}
+import type { Company } from "@/@types/company";
 
 export default function SelectCompanyModal() {
   const [selectedInList, setSelectedInList] = useState<Company>();
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const { user } = useUserStore();
   const { selectedCompany, setSelectedCompany } = useCompanyStore();
 
   const companies: Company[] = [];
 
-  user?.companies_owner.forEach((company) => {
+  user?.companies_owner.map((company) => {
     companies.push({
       id: company.id,
       cnpj_cpf: company.cnpj_cpf,
@@ -45,8 +39,8 @@ export default function SelectCompanyModal() {
 
   const selectCompany = (data?: Company) => {
     const selectedCompany = data ? data : selectedInList;
-    setSelectedCompany(selectedCompany!)
-    setIsOpen(false)
+    setSelectedCompany(selectedCompany!);
+    setIsOpen(false);
   };
 
   return (
@@ -56,7 +50,13 @@ export default function SelectCompanyModal() {
           onPress={() => setIsOpen(true)}
           className="bg-dark-300 flex gap-2 p-0 text-light-100"
         >
-          <Avatar src={user?.image ? user.image : "https://xsgames.co/randomusers/avatar.php?g=pixel"} />
+          <Avatar
+            src={
+              user?.image
+                ? user.image
+                : "https://xsgames.co/randomusers/avatar.php?g=pixel"
+            }
+          />
           <div>
             <strong>{user!.name}</strong>
             <p className="text-xs">{selectedCompany?.name}</p>
@@ -79,7 +79,9 @@ export default function SelectCompanyModal() {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button onPress={onClose} variant="light">Cancelar</Button>
+                <Button onPress={onClose} variant="light">
+                  Cancelar
+                </Button>
                 <Button color="primary" onPress={() => selectCompany()}>
                   Selecionar
                 </Button>

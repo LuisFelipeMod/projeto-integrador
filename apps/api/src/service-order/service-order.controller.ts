@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/
 import { ServiceOrderService } from './service-order.service';
 import { CreateServiceOrderDto } from './dto/create-service-order.dto';
 import { UpdateServiceOrderDto } from './dto/update-service-order.dto';
+import { ShareServiceOrderDto } from './dto/share-service-order.dto';
 
 @Controller('service-order')
 export class ServiceOrderController {
@@ -10,6 +11,11 @@ export class ServiceOrderController {
   @Post()
   create(@Body() createServiceOrderDto: CreateServiceOrderDto) {
     return this.serviceOrderService.create(createServiceOrderDto);
+  }
+
+  @Post("share")
+  shateServiceOrder(@Body() shareServiceOrderDto: ShareServiceOrderDto) {
+    return this.serviceOrderService.shareServiceOrder(shareServiceOrderDto.id, shareServiceOrderDto.email);
   }
 
   @Get()

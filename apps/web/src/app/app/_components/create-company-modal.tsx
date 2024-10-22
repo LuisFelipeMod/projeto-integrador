@@ -15,7 +15,7 @@ import { ChevronRight } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useUserStore } from "../stores/user-store";
+import { useUserStore } from "@/stores/user-store";
 
 interface CreateCompanyModalProps {
     totalCompanyInUser: number

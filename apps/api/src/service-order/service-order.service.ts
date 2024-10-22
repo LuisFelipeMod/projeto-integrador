@@ -2,10 +2,14 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/services/database";
 import { CreateServiceOrderDto } from "./dto/create-service-order.dto";
 import { UpdateServiceOrderDto } from "./dto/update-service-order.dto";
+import { MailService } from "src/shared/services/mail.service";
 
 @Injectable()
 export class ServiceOrderService {
-  constructor(private readonly prismaService: PrismaService) { }
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
 
   async create(createServiceOrderDto: CreateServiceOrderDto) {
     try {
@@ -59,7 +63,7 @@ export class ServiceOrderService {
           id,
         },
         data: {
-          status
+          status,
         },
       });
 
@@ -85,7 +89,6 @@ export class ServiceOrderService {
 
   async getProfitsAndLoss() {
     try {
-      console.log("profitsAndLoss")
       const profitsAndLoss = await this.prismaService.serviceOrder.aggregate({
         _sum: {
           labor_value: true,
@@ -102,7 +105,29 @@ export class ServiceOrderService {
       return data
     } catch (error) {
       console.log("error: " + error);
+    }
+  }
 
+  async shareServiceOrder(id: string, email: string) {
+    try {
+      const serviceOrder = await this.prismaService.serviceOrder.findUnique({
+        where: { id },
+      });
+
+      // if (!serviceOrder) {
+      //   throw new Error("Service order not found");
+      // }
+
+      await this.mailService.sendMail(
+        email,
+        "Uma ordem de serviço foi compartilhada com você",
+        `Parabéns, você recebeu uma ordem de serviço!
+        Para visualizar a ordem de serviço, acesse o link abaixo:
+        ${process.env.CLIENT_URL}/shared/${id}
+        `,
+      );
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

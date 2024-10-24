@@ -66,7 +66,9 @@ function SidebarItem({
 
   return (
     <Button
-      onClick={() => router.push(path)}
+      onClick={() =>
+        router.push(`${pathname.includes("app") ? "" : "app/"}${path}`)
+      }
       className={cn(
         "bg-transparent text-light-100 w-full flex justify-start transition-all duration-300 hover:bg-dark-200",
         { "bg-dark-200": pathname.includes(path) },

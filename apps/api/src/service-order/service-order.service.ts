@@ -87,6 +87,27 @@ export class ServiceOrderService {
     }
   }
 
+  async getProfitsAndLoss() {
+    try {
+      const profitsAndLoss = await this.prismaService.serviceOrder.aggregate({
+        _sum: {
+          labor_value: true,
+          material_value: true
+        }
+      })
+
+      const data = {
+        mao_de_obra: Number(profitsAndLoss._sum.labor_value),
+        material: Number(profitsAndLoss._sum.material_value),
+        lucro: Number(profitsAndLoss._sum.labor_value) - Number(profitsAndLoss._sum.material_value)
+      }
+
+      return data
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  }
+
   async shareServiceOrder(id: string, email: string) {
     try {
       const serviceOrder = await this.prismaService.serviceOrder.findUnique({

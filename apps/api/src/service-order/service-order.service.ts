@@ -92,17 +92,19 @@ export class ServiceOrderService {
       const profitsAndLoss = await this.prismaService.serviceOrder.aggregate({
         _sum: {
           labor_value: true,
-          material_value: true
-        }
-      })
+          material_value: true,
+        },
+      });
 
       const data = {
         mao_de_obra: Number(profitsAndLoss._sum.labor_value),
         material: Number(profitsAndLoss._sum.material_value),
-        lucro: Number(profitsAndLoss._sum.labor_value) - Number(profitsAndLoss._sum.material_value)
-      }
+        lucro:
+          Number(profitsAndLoss._sum.labor_value) -
+          Number(profitsAndLoss._sum.material_value),
+      };
 
-      return data
+      return data;
     } catch (error) {
       console.log("error: " + error);
     }
@@ -114,18 +116,20 @@ export class ServiceOrderService {
         where: { id },
       });
 
-      // if (!serviceOrder) {
-      //   throw new Error("Service order not found");
-      // }
+      if (!serviceOrder) {
+        throw new Error("Service order not found");
+      }
 
-      await this.mailService.sendMail(
-        email,
-        "Uma ordem de serviço foi compartilhada com você",
-        `Parabéns, você recebeu uma ordem de serviço!
-        Para visualizar a ordem de serviço, acesse o link abaixo:
-        ${process.env.CLIENT_URL}/shared/${id}
-        `,
-      );
+      await this.mailService
+        .setTo(email)
+        .setSubject("Uma ordem de serviço foi compartilhada com você")
+        .setHtml(
+          `<h1>Uma ordem de serviço foi compartilhada com você</h1>
+          <p>Parabéns, você recebeu uma ordem de serviço!</p>
+          <p>Para visualizar a ordem de serviço, acesse o link abaixo:</p>
+          <a href="${process.env.CLIENT_URL}/shared/${id}">${process.env.CLIENT_URL}/shared/${id}</a>`,
+        )
+        .send();
     } catch (error) {
       throw new Error(error);
     }

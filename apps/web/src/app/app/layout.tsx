@@ -1,7 +1,7 @@
 "use client"
 
 import CreateCompanyModal from "./_components/create-company-modal";
-import Sidebar from "./_components/sibebar";
+import Sidebar from "./_components/sidebar";
 import { useUserStore } from "@/stores/user-store";
 
 export default function AppLayout({

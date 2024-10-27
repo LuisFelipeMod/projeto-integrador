@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input, Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "@/components/spinner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 const loginSchema = z.object({
   email: z.string().email("Informe um email válido"),
@@ -20,8 +21,17 @@ type LoginSchema = z.infer<typeof loginSchema>;
 export default function AuthForm() {
   const searchParams = useSearchParams();
   const search = searchParams.get("company");
-  //Buscar empresa
-  const company = "Teste";
+
+  useEffect(() => {
+    async function getCompany() {
+      const response = await axios.get(
+        "http://localhost:4000/company/cm2iab1up0004yxwr5h5h7uvu",
+      );
+      console.log(response.data);
+    }
+
+    getCompany();
+  }, []);
 
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -51,7 +61,7 @@ export default function AuthForm() {
     <section className="space-y-4">
       <div>
         <h1 className="text-2xl font-bold">
-          Você foi convidado para participar da empresa {company}
+          Você foi convidado para participar da empresa
         </h1>
         <span className="text-sm text-zinc-500">
           Informe seu email para prosseguir

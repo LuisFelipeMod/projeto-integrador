@@ -30,7 +30,7 @@ export default function AuthForm() {
             await signIn('email', { email: data.email, redirect: false })
             toast.success('Link de acesso enviado ao seu email!')
         } catch(error) {
-            toast.success('Link de acesso enviado ao seu email!')
+            toast.error('Aconteceu um erro ao enviar o link!')
         }
         setLoading(false)
     })
@@ -65,16 +65,6 @@ export default function AuthForm() {
                     className="font-bold"
                 >
                     Enviar Link
-                </Button>
-
-                <Button 
-                    size="sm" 
-                    color="primary" 
-                    variant="light"
-                    fullWidth
-                    onClick={() => router.push("/singup")}
-                >
-                    Não possui conta? clique aqui!
                 </Button>
             </form>
         </section>

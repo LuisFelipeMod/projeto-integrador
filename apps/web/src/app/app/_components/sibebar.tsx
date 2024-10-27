@@ -27,7 +27,6 @@ export default function Sidebar() {
 
         <div className="px-2 space-y-2">
           <SidebarItem label="Home" icon={Home} path="" />
-          <SidebarItem label="Dashboard" icon={AreaChart} path="dashboard" />
           <SidebarItem
             label="Ordem de serviço"
             icon={PencilRuler}

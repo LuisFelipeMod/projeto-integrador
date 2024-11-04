@@ -29,7 +29,6 @@ export default function Sidebar() {
   const route = useRouter();
 
   function logout() {
-
     onClose();
     route.push("/auth");
   }
@@ -44,7 +43,7 @@ export default function Sidebar() {
           </div>
 
           <div className="px-2 space-y-2">
-            <SidebarItem label="Home" icon={Home} path="" />
+            <SidebarItem label="Home" icon={Home} path="/" />
             <SidebarItem
               label="Ordem de serviço"
               icon={PencilRuler}
@@ -83,7 +82,9 @@ export default function Sidebar() {
                   Ao sair, você será desconectado e precisará fazer login
                   novamente para acessar suas informações.
                 </p>
-                <p className="font-bold">Tem certeza de que deseja continuar?</p>
+                <p className="font-bold">
+                  Tem certeza de que deseja continuar?
+                </p>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -115,9 +116,7 @@ function SidebarItem({
 
   return (
     <Button
-      onClick={() =>
-        router.push(`${pathname.includes("app") ? "" : "app/"}${path}`)
-      }
+      onClick={() => router.push(path)}
       className={cn(
         "bg-transparent text-light-100 w-full flex justify-start transition-all duration-300 hover:bg-dark-200",
         { "bg-dark-200": pathname.includes(path) }

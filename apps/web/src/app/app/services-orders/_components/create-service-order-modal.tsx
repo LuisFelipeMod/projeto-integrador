@@ -139,7 +139,7 @@ export default function CreateServiceOrder() {
             <>
               <ModalHeader className="flex flex-col gap-2">
                 <Progress value={percent} maxValue={100} />
-                Criar Orderm de Serviço
+                Criar Ordem de Serviço
               </ModalHeader>
               <ModalBody>
                 <form id="create-company-form">{displayFormStep()}</form>

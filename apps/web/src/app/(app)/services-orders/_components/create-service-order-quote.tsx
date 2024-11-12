@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@nextui-org/react";
+import { Printer } from "lucide-react";
 
 export type ServiceOrderQuoteType  = {
     clientName: string,
@@ -45,8 +46,17 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
 
   return (
     <>      
-    <Button onPress={generateQuote} className="bg-green-400 text-white">
-        teste
+    <Button 
+        onPress={generateQuote} 
+        style={{
+            background: "none",
+            border: "none",
+            padding: "0",
+            cursor: "pointer",
+            color: "#333"
+        }}
+    >
+        <Printer className="cursor-pointer"/>
     </Button>
         <a download id="download" hidden>download</a>
     </> 

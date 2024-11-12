@@ -13,7 +13,7 @@ async function createServiceOrder() {
     status: "Pendente"
   })
   return request
-}
+} 
 
 
 async function getServiceOrder() {
@@ -45,7 +45,6 @@ async function deleteServiceOrder(id:string){
 export default async function CreateServicesOrdersPage() {
   const response = await getServiceOrder();
   const data = response.data;
-  console.log(data)
 
 
   return (

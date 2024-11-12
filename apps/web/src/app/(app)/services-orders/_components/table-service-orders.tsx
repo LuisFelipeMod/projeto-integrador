@@ -18,6 +18,8 @@ import {
   Trash,
 } from "lucide-react";
 
+import CreateServiceOrderQuote from "./create-service-order-quote";
+
 interface Orders {
   client_cpf_cnpj: string;
   type: string;
@@ -28,6 +30,15 @@ interface Orders {
 }
 
 export default function TableServiceOrders() {
+  const serviceOrderQuote  = {
+    clientName: 'Teste Nome',
+    cpfCnpj: '111.111.111-11',
+    email: 'teste@gmail.com',
+    labor_value: 1000,
+    material_value: 40,
+    whole_value: 1040,
+  }
+
   return (
     <Table aria-label="Example static collection table">
       <TableHeader>
@@ -58,7 +69,7 @@ export default function TableServiceOrders() {
           <TableCell>111.111.111-11</TableCell>
           <TableCell>Técnico em Informática</TableCell>
           <TableCell className="flex">
-            <Printer className="cursor-pointer"/>
+            <CreateServiceOrderQuote ServiceOrderQuote={serviceOrderQuote} />
             <Pencil className="cursor-pointer"/>
             <Trash2 className="cursor-pointer"/>
             <CircleCheck className="cursor-pointer"/>

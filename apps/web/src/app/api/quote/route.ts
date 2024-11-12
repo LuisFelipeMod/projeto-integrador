@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import fs from 'fs';
 import path from 'path';
 // import {renderToStaticMarkup} from "react-dom/server";
-import QuoteTemplate from "../../app/services-orders/_components/quote-template";
+import QuoteTemplate from "../../(app)/services-orders/_components/quote-template";
 import React from "react";
 
 export async function POST(request: Request, context: any) {

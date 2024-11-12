@@ -1,4 +1,4 @@
-import { ServiceOrderQuoteComponentType, ServiceOrderQuoteType } from "./create-service-order-quote";
+import { ServiceOrderQuoteType } from "./create-service-order-quote";
 
 export default function QuoteTemplate(quote: ServiceOrderQuoteType) {
   return (

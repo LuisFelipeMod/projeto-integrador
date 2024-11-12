@@ -2,19 +2,42 @@
 
 import { Button } from "@nextui-org/react";
 
-type ServiceOrderQuoteType  = {
-    value: number
+export type ServiceOrderQuoteType  = {
+    clientName: string,
+    cpfCnpj: string,
+    email: string,
+    labor_value: number,
+    material_value: number,
+    whole_value: number,
 }
 
-export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteType) {
+type ServiceOrderQuoteComponentType = {
+    ServiceOrderQuote: ServiceOrderQuoteType
+}
+
+export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteComponentType) {
 
     const generateQuote = async () => {
         try {
-            const result = await fetch("/api/quote", {
-                method: 'POST'
+            const fileName = Date.now().toString(36) + Math.random().toString(36).substring(2) + ".pdf"
+            await fetch("/api/quote", {
+                method: 'POST',
+                body: JSON.stringify({
+                    fileName: fileName,
+                    serviceOrder: serviceOrder.ServiceOrderQuote
+                })
             }).then( r => r.json())
 
-            document.getElementById("download")?.click();
+            document.getElementById("download")!.setAttribute("href","/"+fileName);
+            await document.getElementById("download")?.click();
+
+            await fetch("/api/quote", {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    fileName: fileName
+                })
+            }).then( r => r.json())
+
         } catch (err) {
             console.log("ERROR: " + err)
         }   
@@ -25,7 +48,7 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteT
     <Button onPress={generateQuote} className="bg-green-400 text-white">
         teste
     </Button>
-        <a href="/result.pdf" download id="download" hidden>download</a>
+        <a download id="download" hidden>download</a>
     </> 
   );
 }

@@ -23,8 +23,13 @@ export class ServiceOrderService {
     }
   }
 
-  findAll() {
-    return `This action returns all serviceOrder`;
+  async findAll() {
+    try {
+      const serviceOrder = await this.prismaService.serviceOrder.findMany();
+      return serviceOrder;
+    } catch (error) {
+      console.log("error: " + error);
+    }
   }
 
   async findOne(id: string) {

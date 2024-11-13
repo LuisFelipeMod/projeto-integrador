@@ -19,6 +19,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 const formSchema = z.object({
   client_cpf_cnpj: z.string(),
@@ -48,11 +49,20 @@ export default function CreateServiceOrder() {
 
   const alterPage = async () => {
     if (page === numberOfPage) {
-      const data = form.getValues();
-      await fetch("/api/service-order", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
+      const formData = form.getValues();
+
+      const data = {
+        client_cpf_cnpj: String(formData.client_cpf_cnpj), 
+        type: String(formData.type),
+        description: String(formData.description),
+        material_value: Number(formData.material_value),
+        labor_value: Number(formData.labor_value)
+      }
+
+      await axios.post(
+        "http://localhost:4000/service-order",
+        data
+      );
 
       onClose();
       // setIsOpen(false);

@@ -72,6 +72,7 @@ export default function App(props: any) {
     <>
       <Button
         onPress={onOpen}
+        className="bg-transparent px-0 mx-0 w-10 min-w-0"
       >
         <div className="flex p-1 rounded-full bg-blue-500 shadow-blue-500  shadow-md cursor-pointer">
           <Pencil className="w-7 h-7" stroke="white" />

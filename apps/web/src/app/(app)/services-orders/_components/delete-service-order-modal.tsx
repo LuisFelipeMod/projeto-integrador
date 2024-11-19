@@ -33,7 +33,7 @@ export default function DeleteServiceOrderModal(props: any) {
 
   return (
     <>
-      <Button onPress={onOpen}>
+      <Button onPress={onOpen} className="bg-transparent px-0 mx-0 w-10 min-w-0">
         <div className="flex p-1 rounded-full bg-red-500  shadow-red-500  shadow-md cursor-pointer">
           <Trash2 className="w-7 h-7" stroke="white" />
         </div>

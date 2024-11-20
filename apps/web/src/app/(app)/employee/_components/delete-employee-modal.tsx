@@ -12,7 +12,7 @@ import { Trash2 } from "lucide-react";
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner";
 
-export default function DeleteServiceOrderModal(props: any) {
+export default function DeleteEmployeeModal(props: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const route = useRouter()
 
@@ -22,12 +22,12 @@ export default function DeleteServiceOrderModal(props: any) {
     if (!id) toast.error("Ordem não encontrada.");
 
     try {
-      await axios.delete(`http://localhost:4000/service-order/${id}`);
-      toast.success("Ordem de serviço deletada com sucesso!");
+      await axios.delete(`http://localhost:4000/employee/${id}`);
+      toast.success("Funcionário deletado com sucesso!");
       route.push("/services-orders")
     } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao deletar ordem de serviço");
+      console.error("Erro ao editar funcionário:", error);
+      toast.error("Erro ao deletar funcionário");
     }
   }
 
@@ -43,7 +43,7 @@ export default function DeleteServiceOrderModal(props: any) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Excluir Ordem de Serviço
+                Excluir funcionário
               </ModalHeader>
               <ModalBody>
                 <p>Você tem certeza? (Essa ação não poderá ser desfeita)</p>

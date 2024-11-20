@@ -58,6 +58,7 @@ export default function TableServiceOrders() {
         <TableColumn>Descrição</TableColumn>
         <TableColumn>Valor do Material</TableColumn>
         <TableColumn>Valor da Mão de Obra</TableColumn>
+        <TableColumn>Status</TableColumn>
         <TableColumn> </TableColumn>
       </TableHeader>
       <TableBody>
@@ -69,6 +70,7 @@ export default function TableServiceOrders() {
               <TableCell>{item.description}</TableCell>
               <TableCell>{item.material_value}</TableCell>
               <TableCell>{item.labor_value}</TableCell>
+              <TableCell>{item.status}</TableCell>
               <TableCell className="flex gap-2">
                 <div className="flex p-1 rounded-full bg-yellow-500 shadow-yellow-500  shadow-md cursor-pointer">
                   <Printer className="w-7 h-7" stroke="white" />

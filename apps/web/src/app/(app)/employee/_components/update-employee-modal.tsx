@@ -8,8 +8,10 @@ import {
   useDisclosure,
   Checkbox,
   Input,
+  DateInput,
   Link,
 } from "@nextui-org/react";
+import { CalendarDate, parseDate } from "@internationalized/date";
 import axios from "axios";
 import { Mail, Lock, Printer, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -20,14 +22,7 @@ export default function App(props: any) {
 
   const fields = props.content;
 
-  const labels = [
-    "CPF/CNPJ",
-    "Tipo de Serviço",
-    "Descrição",
-    "Valor do Material",
-    "Valor da Mão de Obra",
-    "Status",
-  ];
+  const labels = ["Cargo", "Data de Admissão", "Data da Demissão"];
 
   const [formValues, setFormValues] = useState(
     fields.reduce((acc: any, field: any) => ({ ...acc, ...field }), {})
@@ -38,33 +33,27 @@ export default function App(props: any) {
       ...prevValues,
       [prop]: value,
     }));
+
   };
 
-  async function putOrder() {
+  async function patchEmployee() {
     const id = props.id;
+    
+    const updatedValues = {
+      ...formValues,
+      startDate: formValues.startDate ? new Date(formValues.startDate).toISOString() : null,
+      endDate: formValues.endDate ? new Date(formValues.endDate).toISOString() : null,
+    };
+    
+    if (!id) toast.error("Usuário não encontrado.");
 
-    if (!id) toast.error("Ordem não encontrada.");
 
     try {
-      await axios.put(`http://localhost:4000/service-order/${id}`, formValues);
-      toast.success("Ordem de serviço editada com sucesso!");
+      await axios.patch(`http://localhost:4000/employee/${id}`, updatedValues);
+      toast.success("Usuário editado com sucesso!");
     } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao editar ordem de serviço");
-    }
-  }
-
-  async function deleteOrder() {
-    const id = props.id;
-
-    if (!id) toast.error("Ordem não encontrada.");
-
-    try {
-      await axios.delete(`http://localhost:4000/service-order/${id}`);
-      toast.success("Ordem de serviço deletada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao deletar ordem de serviço");
+      console.error("Erro ao editar usuário:", error);
+      toast.error("Erro ao editar usuário");
     }
   }
 
@@ -83,22 +72,33 @@ export default function App(props: any) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Editar Ordem de Serviço
+                Editar Funcionário
               </ModalHeader>
               <ModalBody>
                 {fields.map((item: any) =>
                   Object.keys(item).map((key, keyIndex) =>
-                    key !== "id" ? (
-                      <Input
-                        autoFocus
-                        key={keyIndex - 1}
-                        label={labels[keyIndex - 1]}
-                        value={formValues[key]}
-                        onChange={(e) => handleChange(key, e.target.value)}
-                        variant="bordered"
-                      />
+                    key !== "startDate" && key !== "endDate" ? (
+                      key == "position" ? (
+                        <Input
+                          autoFocus
+                          key={keyIndex - 1}
+                          label={labels[keyIndex - 1]}
+                          value={formValues[key]}
+                          onChange={(e) => handleChange(key, e.target.value)}
+                          variant="bordered"
+                        />
+                      ) : (
+                        <></>
+                      )
                     ) : (
-                      <></>
+                      <DateInput
+                        label={labels[keyIndex - 1]}
+                        defaultValue={parseDate(
+                          new Date(formValues[key]).toISOString().split("T")[0]
+                        )}
+                        placeholderValue={new CalendarDate(1995, 11, 6)}
+                        onChange={(date) => handleChange(key, date.toString())}
+                      />
                     )
                   )
                 )}
@@ -107,7 +107,7 @@ export default function App(props: any) {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Fechar
                 </Button>
-                <Button color="primary" onPress={putOrder}>
+                <Button color="primary" onPress={patchEmployee}>
                   Editar
                 </Button>
               </ModalFooter>

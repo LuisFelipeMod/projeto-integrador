@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/react";
 import { Printer } from "lucide-react";
 
 export type ServiceOrderQuoteType  = {
+    id: string,
     clientName: string,
     cpfCnpj: string,
     email: string,
@@ -20,6 +21,9 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
 
     const generateQuote = async () => {
         try {
+            document.getElementById("printer-svg-"+serviceOrder.ServiceOrderQuote.id)!.style.display = "none"
+            document.getElementById("loading-component-"+serviceOrder.ServiceOrderQuote.id)!.style.display = "block"
+        
             const fileName = Date.now().toString(36) + Math.random().toString(36).substring(2) + ".pdf"
             await fetch("/api/quote", {
                 method: 'POST',
@@ -29,8 +33,8 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
                 })
             }).then( r => r.json())
 
-            document.getElementById("download")!.setAttribute("href","/"+fileName);
-            await document.getElementById("download")?.click();
+            document.getElementById("download-"+serviceOrder.ServiceOrderQuote.id)!.setAttribute("href","/"+fileName);
+            await document.getElementById("download-"+serviceOrder.ServiceOrderQuote.id)?.click();
 
             await fetch("/api/quote", {
                 method: 'DELETE',
@@ -38,6 +42,9 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
                     fileName: fileName
                 })
             }).then( r => r.json())
+
+            document.getElementById("printer-svg-"+serviceOrder.ServiceOrderQuote.id)!.style.display = "block"
+            document.getElementById("loading-component-"+serviceOrder.ServiceOrderQuote.id)!.style.display = "none"
 
         } catch (err) {
             console.log("ERROR: " + err)
@@ -47,6 +54,7 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
   return (
     <>      
     <Button 
+        id="quote-printer"
         onPress={generateQuote} 
         style={{
             background: "none",
@@ -55,10 +63,12 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
             cursor: "pointer",
             color: "#333"
         }}
+        className="bg-transparent px-0 mx-0 w-10 min-w-0"
     >
-        <Printer className="cursor-pointer"/>
+        <Printer id={"printer-svg-"+serviceOrder.ServiceOrderQuote.id} className="w-7 h-7" stroke="white"/>
+        <h1 id={"loading-component-"+serviceOrder.ServiceOrderQuote.id} style={{display: "none"}}>Loading...</h1>
     </Button>
-        <a download id="download" hidden>download</a>
+        <a download id={"download-"+serviceOrder.ServiceOrderQuote.id} hidden>download</a>
     </> 
   );
 }

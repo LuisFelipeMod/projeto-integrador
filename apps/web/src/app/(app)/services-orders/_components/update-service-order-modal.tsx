@@ -46,7 +46,7 @@ export default function App(props: any) {
     if (!id) toast.error("Ordem não encontrada.");
 
     try {
-      await axios.put(`http://localhost:4000/service-order/${id}`, formValues);
+      await axios.patch(`http://localhost:4000/service-order/${id}`, formValues);
       toast.success("Ordem de serviço editada com sucesso!");
     } catch (error) {
       console.error("Erro ao editar ordem de serviço:", error);

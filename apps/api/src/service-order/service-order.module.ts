@@ -1,11 +1,10 @@
 import { Module } from "@nestjs/common";
-import { ServiceOrderService } from "./service-order.service";
-import { ServiceOrderController } from "./service-order.controller";
-import { PrismaService } from "../shared/services/database";
 import { MailService } from "../shared/services/mail.service";
+import { ServiceOrderController } from "./service-order.controller";
+import { ServiceOrderService } from "./service-order.service";
 
 @Module({
   controllers: [ServiceOrderController],
-  providers: [ServiceOrderService, PrismaService, MailService],
+  providers: [ServiceOrderService, MailService],
 })
 export class ServiceOrderModule {}

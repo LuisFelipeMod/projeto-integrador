@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/shared/services/database";
+import { PrismaService } from "src/shared/services/prisma/prisma.service";
 import { CreateServiceOrderDto } from "./dto/create-service-order.dto";
 import { UpdateServiceOrderDto } from "./dto/update-service-order.dto";
 import { MailService } from "src/shared/services/mail.service";

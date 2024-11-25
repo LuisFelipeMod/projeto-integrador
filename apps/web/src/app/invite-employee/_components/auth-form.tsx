@@ -20,14 +20,13 @@ type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function AuthForm() {
   const searchParams = useSearchParams();
-  const search = searchParams.get("company");
+  const companyId = searchParams.get("company");
 
   useEffect(() => {
     async function getCompany() {
       const response = await axios.get(
-        "http://localhost:4000/company/cm2iab1up0004yxwr5h5h7uvu",
+        `http://localhost:4000/company/${companyId}`,
       );
-      console.log(response.data);
     }
 
     getCompany();

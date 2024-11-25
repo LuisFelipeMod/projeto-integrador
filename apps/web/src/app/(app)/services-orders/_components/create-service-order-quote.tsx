@@ -65,7 +65,10 @@ export default function CreateServiceOrderQuote(serviceOrder: ServiceOrderQuoteC
         }}
         className="bg-transparent px-0 mx-0 w-10 min-w-0"
     >
-        <Printer id={"printer-svg-"+serviceOrder.ServiceOrderQuote.id} className="w-7 h-7" stroke="white"/>
+        <div className="flex p-1 rounded-full bg-yellow-500 shadow-yellow-500  shadow-md cursor-pointer">
+            <Printer id={"printer-svg-"+serviceOrder.ServiceOrderQuote.id} className="w-7 h-7" stroke="white"/>
+        </div>
+        
         <h1 id={"loading-component-"+serviceOrder.ServiceOrderQuote.id} style={{display: "none"}}>Loading...</h1>
     </Button>
         <a download id={"download-"+serviceOrder.ServiceOrderQuote.id} hidden>download</a>

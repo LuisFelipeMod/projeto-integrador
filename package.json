@@ -27,5 +27,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@tanstack/react-query": "^5.61.3",
+    "date-fns": "^4.1.0",
+    "react-query": "^3.39.3"
+  }
 }

@@ -9,32 +9,45 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { Trash2 } from "lucide-react";
-import { useRouter } from 'next/navigation'
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "react-query";
 
-export default function DeleteServiceOrderModal(props: any) {
+interface DeleteServiceOrderModalProps {
+  id: string;
+}
+
+export default function DeleteServiceOrderModal({ id }: DeleteServiceOrderModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const route = useRouter()
+  const queryClient = useQueryClient();
 
-  async function deleteOrder() {
-    const id = props.id;
-
-    if (!id) toast.error("Ordem não encontrada.");
-
-    try {
+  const mutation = useMutation(
+    async () => {
+      if (!id) throw new Error("Ordem não encontrada.");
       await axios.delete(`http://localhost:4000/service-order/${id}`);
-      toast.success("Ordem de serviço deletada com sucesso!");
-      route.push("/services-orders")
-    } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao deletar ordem de serviço");
+    },
+    {
+      onSuccess: () => {
+        toast.success("Ordem de serviço deletada com sucesso!");
+
+        queryClient.invalidateQueries("serviceOrders");
+      },
+      onError: (error: any) => {
+        console.error("Erro ao deletar ordem de serviço:", error);
+        toast.error(
+          error.response?.data?.message || "Erro ao deletar ordem de serviço."
+        );
+      },
     }
-  }
+  );
+
+  const handleDelete = () => {
+    mutation.mutate();
+  };
 
   return (
     <>
       <Button onPress={onOpen} className="bg-transparent px-0 mx-0 w-10 min-w-0">
-        <div className="flex p-1 rounded-full bg-red-500  shadow-red-500  shadow-md cursor-pointer">
+        <div className="flex p-1 rounded-full bg-red-500 shadow-red-500 shadow-md cursor-pointer">
           <Trash2 className="w-7 h-7" stroke="white" />
         </div>
       </Button>
@@ -52,7 +65,14 @@ export default function DeleteServiceOrderModal(props: any) {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Fechar
                 </Button>
-                <Button color="danger" onPress={deleteOrder}>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    handleDelete();
+                    onClose();
+                  }}
+                  isLoading={mutation.isLoading}
+                >
                   Excluir
                 </Button>
               </ModalFooter>

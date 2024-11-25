@@ -12,13 +12,13 @@ export class MailService {
       url: process.env.EMAIL_SERVER,
     });
     this.mailOptions = {
-      from: process.env.EMAIL_FROM, // Padrão do remetente
+      from: process.env.EMAIL_FROM,
     };
   }
 
   setTo(to: string) {
     this.mailOptions.to = to;
-    return this; // Retorna a instância para permitir o encadeamento
+    return this;
   }
 
   setFrom(from: string) {

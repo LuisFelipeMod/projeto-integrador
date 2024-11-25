@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateEmployeeDto } from "./dto/create-employee.dto";
 import { UpdateEmployeeDto } from "./dto/update-employee.dto";
-import { PrismaService } from "../shared/services/database";
+import { PrismaService } from "../shared/services/prisma/prisma.service";
 import { MailService } from "../shared/services/mail.service";
 
 @Injectable()

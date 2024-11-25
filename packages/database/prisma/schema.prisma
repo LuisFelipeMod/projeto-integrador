@@ -96,6 +96,10 @@ model ServiceOrder {
   material_value  Decimal
   labor_value     Decimal
   status          String  @default("Pendente")
+  client_name     String
+  client_email    String
+  initial_date    DateTime
+  estimated_date  DateTime
 
   @@map("services-orders")
 }

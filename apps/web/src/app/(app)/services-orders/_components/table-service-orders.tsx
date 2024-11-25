@@ -49,26 +49,43 @@ export default function TableServiceOrders() {
         <TableColumn>Ações</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders ? orders.map((item: Orders) => (
-          <TableRow key={item.id}>
-            <TableCell>{item.client_cpf_cnpj}</TableCell>
-            <TableCell>{item.type}</TableCell>
-            <TableCell>{item.description}</TableCell>
-            <TableCell>{item.material_value}</TableCell>
-            <TableCell>{item.labor_value}</TableCell>
-            <TableCell>{item.status}</TableCell>
-            <TableCell className="flex gap-2">
-              <div className="flex p-1 rounded-full bg-yellow-500 shadow-yellow-500 shadow-md cursor-pointer">
-                <Printer className="w-7 h-7" stroke="white" />
-              </div>
-              <UpdateServiceOrderModal content={[item]} id={item.id} />
-              <DeleteServiceOrderModal id={item.id} />
-              <div className="flex p-1 rounded-full bg-green-500 shadow-green-500 shadow-md cursor-pointer">
-                <Check className="w-7 h-7" stroke="white" />
-              </div>
-            </TableCell>
-          </TableRow>
-        )) : <></>}
+        {orders ? (
+          orders.map((item: any) => {
+            const serviceOrderQuote = {
+              id: item.id,
+              clientName: "Teste Nome",
+              cpfCnpj: item.client_cpf_cnpj,
+              email: "teste@gmail.com",
+              labor_value: item.labor_value,
+              material_value: item.material_value,
+              whole_value: Number(item.material_value) + Number(item.labor_value),
+            };
+
+            return (
+              <TableRow key={item.client_cpf_cnpj}>
+                <TableCell>{item.client_cpf_cnpj}</TableCell>
+                <TableCell>{item.type}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell>{item.material_value}</TableCell>
+                <TableCell>{item.labor_value}</TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell className="flex gap-2">
+                  <div className="flex p-1 rounded-full bg-yellow-500 shadow-yellow-500  shadow-md cursor-pointer">
+                    {/* <Printer className="w-7 h-7" stroke="white" /> */}
+                    <CreateServiceOrderQuote ServiceOrderQuote={serviceOrderQuote} />
+                  </div>
+                  <UpdateServiceOrderModal content={[item]} id={item.id}/>
+                  <DeleteServiceOrderModal id={item.id}/>
+                  <div className="flex p-1 rounded-full bg-green-500  shadow-green-500 shadow-md cursor-pointer">
+                    <Check className="w-7 h-7" stroke="white" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )
+          })
+        ) : (
+          <></>
+        )}
       </TableBody>
     </Table>
   );

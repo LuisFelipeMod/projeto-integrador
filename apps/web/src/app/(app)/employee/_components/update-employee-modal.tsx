@@ -7,7 +7,7 @@ import {
   Button,
   useDisclosure,
   Input,
-  DateInput,
+  DatePicker,
 } from "@nextui-org/react";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import { Pencil } from "lucide-react";
@@ -107,7 +107,7 @@ export default function UpdateEmployeeModal({
                       />
                     ) : null
                   ) : (
-                    <DateInput
+                    <DatePicker
                       key={keyIndex}
                       label={labels[keyIndex - 1]}
                       defaultValue={

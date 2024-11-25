@@ -6,19 +6,25 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
   Input,
-  Link,
 } from "@nextui-org/react";
-import axios from "axios";
-import { Mail, Lock, Printer, Pencil } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Pencil } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
 
-export default function App(props: any) {
+interface UpdateServiceOrderModalProps {
+  id: string;
+  content: any; 
+}
+
+export default function UpdateServiceOrderModal({
+  id,
+  content,
+}: UpdateServiceOrderModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const fields = props.content;
+  const queryClient = useQueryClient();
 
   const labels = [
     "CPF/CNPJ",
@@ -30,7 +36,7 @@ export default function App(props: any) {
   ];
 
   const [formValues, setFormValues] = useState(
-    fields.reduce((acc: any, field: any) => ({ ...acc, ...field }), {})
+    content.reduce((acc: any, field: any) => ({ ...acc, ...field }), {})
   );
 
   const handleChange = (prop: string, value: string) => {
@@ -40,33 +46,29 @@ export default function App(props: any) {
     }));
   };
 
-  async function putOrder() {
-    const id = props.id;
+  const mutation = useMutation(
+    async (updatedValues: any) => {
+      if (!id) throw new Error("Ordem não encontrada.");
+      await axios.patch(`http://localhost:4000/service-order/${id}`, updatedValues);
+    },
+    {
+      onSuccess: () => {
+        toast.success("Ordem de serviço editada com sucesso!");
 
-    if (!id) toast.error("Ordem não encontrada.");
-
-    try {
-      await axios.patch(`http://localhost:4000/service-order/${id}`, formValues);
-      toast.success("Ordem de serviço editada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao editar ordem de serviço");
+        queryClient.invalidateQueries("serviceOrders");
+      },
+      onError: (error: any) => {
+        console.error("Erro ao editar ordem de serviço:", error);
+        toast.error(
+          error.response?.data?.message || "Erro ao editar ordem de serviço."
+        );
+      },
     }
-  }
+  );
 
-  async function deleteOrder() {
-    const id = props.id;
-
-    if (!id) toast.error("Ordem não encontrada.");
-
-    try {
-      await axios.delete(`http://localhost:4000/service-order/${id}`);
-      toast.success("Ordem de serviço deletada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao editar ordem de serviço:", error);
-      toast.error("Erro ao deletar ordem de serviço");
-    }
-  }
+  const handleEdit = () => {
+    mutation.mutate(formValues);
+  };
 
   return (
     <>
@@ -74,7 +76,7 @@ export default function App(props: any) {
         onPress={onOpen}
         className="bg-transparent px-0 mx-0 w-10 min-w-0"
       >
-        <div className="flex p-1 rounded-full bg-blue-500 shadow-blue-500  shadow-md cursor-pointer">
+        <div className="flex p-1 rounded-full bg-blue-500 shadow-blue-500 shadow-md cursor-pointer">
           <Pencil className="w-7 h-7" stroke="white" />
         </div>
       </Button>
@@ -86,20 +88,18 @@ export default function App(props: any) {
                 Editar Ordem de Serviço
               </ModalHeader>
               <ModalBody>
-                {fields.map((item: any) =>
+                {content.map((item: any) =>
                   Object.keys(item).map((key, keyIndex) =>
                     key !== "id" ? (
                       <Input
-                        autoFocus
-                        key={keyIndex - 1}
-                        label={labels[keyIndex - 1]}
-                        value={formValues[key]}
+                        autoFocus={keyIndex === 0}
+                        key={keyIndex}
+                        label={labels[keyIndex]}
+                        value={formValues[key] || ""}
                         onChange={(e) => handleChange(key, e.target.value)}
                         variant="bordered"
                       />
-                    ) : (
-                      <></>
-                    )
+                    ) : null
                   )
                 )}
               </ModalBody>
@@ -107,7 +107,14 @@ export default function App(props: any) {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Fechar
                 </Button>
-                <Button color="primary" onPress={putOrder}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    handleEdit();
+                    onClose();
+                  }}
+                  isLoading={mutation.isLoading}
+                >
                   Editar
                 </Button>
               </ModalFooter>

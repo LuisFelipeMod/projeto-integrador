@@ -9,32 +9,48 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { Trash2 } from "lucide-react";
-import { useRouter } from 'next/navigation'
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "react-query";
+import { useCompanyStore } from "@/stores/company-store";
 
-export default function DeleteEmployeeModal(props: any) {
+interface DeleteEmployeeModalProps {
+  id: string;
+}
+
+export default function DeleteEmployeeModal({ id }: DeleteEmployeeModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const route = useRouter()
+  const queryClient = useQueryClient();
+  const { selectedCompany } = useCompanyStore();
+  const selectedCompanyId = String(selectedCompany?.id); 
 
-  async function deleteOrder() {
-    const id = props.id;
+  const mutation = useMutation(
+    async () => {
+      if (!id) throw new Error("Funcionário não encontrado.");
+      await axios.delete(`http://localhost:4000/employee/${selectedCompanyId}/${id}`);
+    },
+    {
+      onSuccess: () => {
+        toast.success("Funcionário deletado com sucesso!");
 
-    if (!id) toast.error("Ordem não encontrada.");
-
-    try {
-      await axios.delete(`http://localhost:4000/employee/${id}`);
-      toast.success("Funcionário deletado com sucesso!");
-      route.push("/services-orders")
-    } catch (error) {
-      console.error("Erro ao editar funcionário:", error);
-      toast.error("Erro ao deletar funcionário");
+        queryClient.invalidateQueries("employees");
+      },
+      onError: (error: any) => {
+        console.error("Erro ao deletar funcionário:", error);
+        toast.error(
+          error.response?.data?.message || "Erro ao deletar funcionário."
+        );
+      },
     }
-  }
+  );
+
+  const handleDelete = () => {
+    mutation.mutate();
+  };
 
   return (
     <>
       <Button onPress={onOpen} className="bg-transparent px-0 mx-0 w-10 min-w-0">
-        <div className="flex p-1 rounded-full bg-red-500  shadow-red-500  shadow-md cursor-pointer">
+        <div className="flex p-1 rounded-full bg-red-500 shadow-red-500 shadow-md cursor-pointer">
           <Trash2 className="w-7 h-7" stroke="white" />
         </div>
       </Button>
@@ -52,7 +68,14 @@ export default function DeleteEmployeeModal(props: any) {
                 <Button color="primary" variant="light" onPress={onClose}>
                   Fechar
                 </Button>
-                <Button color="danger" onPress={deleteOrder}>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    handleDelete();
+                    onClose();
+                  }}
+                  isLoading={mutation.isLoading}
+                >
                   Excluir
                 </Button>
               </ModalFooter>

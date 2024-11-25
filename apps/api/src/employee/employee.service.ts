@@ -13,11 +13,11 @@ export class EmployeeService {
 
   create(createEmployeeDto: CreateEmployeeDto) { }
 
-  async findAll() {
+  async findAll(companyId: string) {
     try {
       const employees = await this.prismaService.employee.findMany({
         where: {
-          companyId: "teste",
+          companyId,
         },
       });
       return employees;
@@ -26,11 +26,11 @@ export class EmployeeService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(companyId: string, id: string) {
     try {
       const employees = await this.prismaService.employee.findMany({
         where: {
-          companyId: "teste",
+          companyId,
           id,
         },
       });
@@ -84,7 +84,7 @@ export class EmployeeService {
         .setTo(email)
         .setSubject("Você foi convidado para participar de uma empresa!")
         .setHtml(
-          `<a href="${process.env.CLIENT_URL}/invite-employee?company=${companyId}">Clique aqui para aceitar!</a>`,
+          `<a href="${process.env.NEXT_PUBLIC_APP_URL}/invite-employee?company=${companyId}">Clique aqui para aceitar!</a>`,
         )
         .send();
     } catch (error) {

@@ -30,7 +30,7 @@ export default function InviteEmployee() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { selectedCompany } = useCompanyStore();
 
-  const inviteUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/invite-employee?company=${selectedCompany?.id}`;
+  const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/invite-employee?company=${selectedCompany?.id}`;
 
   const form = useForm<InviteEmployeeForm>({
     resolver: zodResolver(inviteEmployeeSchema),

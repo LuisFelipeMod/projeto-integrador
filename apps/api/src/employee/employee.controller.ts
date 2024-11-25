@@ -17,14 +17,14 @@ export class EmployeeController {
     return this.employeeService.inviteEmployee(inviteEmployeeDto.email, inviteEmployeeDto.companyId);
   }
 
-  @Get()
-  findAll() {
-    return this.employeeService.findAll();
+  @Get(':companyId')
+  findAll(@Param('companyId') companyId: string, ) {
+    return this.employeeService.findAll(companyId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.employeeService.findOne(id);
+  findOne(@Param('companyId') companyId: string, @Param('id') id: string) {
+    return this.employeeService.findOne(companyId, id);
   }
 
   @Patch(':id')

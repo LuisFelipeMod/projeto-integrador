@@ -9,75 +9,65 @@ import {
   TableCell,
 } from "@nextui-org/react";
 
-import { Search, Printer, Pencil, Trash2, Check, Trash } from "lucide-react";
-
 import UpdateEmployeeModal from "./update-employee-modal";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import DeleteEmployeeModal from "./delete-employee-modal";
+import { useQuery } from "react-query";
 import { useCompanyStore } from "@/stores/company-store";
+import axios from "axios";
 
-interface Orders {
-  client_cpf_cnpj: string;
-  type: string;
-  description: string;
-  material_value: number;
-  labor_value: number;
-  status: string;
+interface Employee {
   id: string;
+  position: string;
+  startDate: string;
+  endDate: string | null;
 }
 
 export default function TableEmployee() {
-  const [orders, setOrders] = useState<any>([]);
   const { selectedCompany } = useCompanyStore();
+  const selectedCompanyId = String(selectedCompany?.id);
 
-  useEffect(() => {
-    async function fetchOrders() {
-      const response = await axios.get("http://localhost:4000/employee");
-      const data = response.data;
-
-      setOrders(data);
-    }
-    fetchOrders();
-  }, []);
-
-  const formatedDate = (date:any) => {
-    const convertedDate = new Date(date).toLocaleDateString(
-      "pt-BR",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }
+  const fetchEmployees = async (): Promise<Employee[]> => {
+    const response = await axios.get(
+      `http://localhost:4000/employee/${selectedCompanyId}`
     );
+    return response.data;
+  };
 
-    return convertedDate
-  } 
- 
+  const {
+    data: employees,
+    isLoading,
+    isError,
+  } = useQuery("employees", fetchEmployees);
+
+  const formatedDate = (date: string | null) => {
+    if (!date) return "N/A";
+    
+    return date.split("T")[0].split("-").reverse().join("/");
+  };
+
+  if (isLoading) return <p>Carregando...</p>;
+  if (isError) return <p>Erro ao carregar os dados dos funcionários.</p>;
+
   return (
-    <Table aria-label="Example static collection table">
+    <Table aria-label="Tabela de Funcionários">
       <TableHeader>
         <TableColumn>Cargo</TableColumn>
         <TableColumn>Data de Admissão</TableColumn>
         <TableColumn>Data de Demissão</TableColumn>
-        <TableColumn> </TableColumn>
+        <TableColumn>Ações</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders ? (
-          orders.map((item: any, key: number) => (
-            <TableRow key={key}>
-              <TableCell>{item.position}</TableCell>
-              <TableCell>{formatedDate(item.startDate)}</TableCell>
-              <TableCell>{formatedDate(item.endDate)}</TableCell>
-              <TableCell className="flex gap-2">
-                <UpdateEmployeeModal content={[item]} id={item.id} />
-                <DeleteEmployeeModal id={item.id} />
-              </TableCell>
-            </TableRow>
-          ))
-        ) : (
-          <></>
-        )}
+        {(employees ?? []).map((employee: Employee) => (
+          <TableRow key={employee.id}>
+            <TableCell>{employee.position}</TableCell>
+            <TableCell>{formatedDate(employee.startDate)}</TableCell>
+            <TableCell>{formatedDate(employee.endDate)}</TableCell>
+            <TableCell className="flex gap-2">
+              <UpdateEmployeeModal content={employee} id={employee.id} />
+              <DeleteEmployeeModal id={employee.id} />
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

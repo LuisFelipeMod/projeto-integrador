@@ -56,6 +56,7 @@ export default function UpdateServiceOrderModal({
       onSuccess: () => {
         toast.success("Ordem de serviço editada com sucesso!");
         queryClient.invalidateQueries("serviceOrders");
+        onClose();
       },
       onError: (error: any) => {
         console.error("Erro ao editar ordem de serviço:", error);
@@ -83,6 +84,32 @@ export default function UpdateServiceOrderModal({
       case 1:
         return (
           <div className="space-y-4">
+            <div className="space-y-1">
+              <label className="font-semibold" htmlFor="client-name-input">
+                Nome do Cliente
+              </label>
+              <Input
+                id="client-name-input"
+                size="lg"
+                value={formValues.client_name}
+                onChange={(e) => handleChange("client_name", e.target.value)}
+                variant="bordered"
+                isInvalid={!formValues.client_name}
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="font-semibold" htmlFor="client-email-input">
+                Email do Cliente
+              </label>
+              <Input
+                id="client-email-input"
+                size="lg"
+                value={formValues.client_email}
+                onChange={(e) => handleChange("client_email", e.target.value)}
+                variant="bordered"
+                isInvalid={!formValues.client_email}
+              />
+            </div>
             <div className="space-y-1">
               <label className="font-semibold" htmlFor="client-cpf-cnpj-input">
                 CPF / CNPJ do Cliente

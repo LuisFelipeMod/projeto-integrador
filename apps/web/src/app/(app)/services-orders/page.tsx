@@ -6,7 +6,7 @@ import axios from "axios";
 export default async function CreateServicesOrdersPage() {
 
   return (
-    <main className="flex flex-col p-5 gap-4 items-end">
+    <main className="flex flex-col p-5 gap-4 items-end w-[75vw]">
       <div className="w-full flex items-center justify-between">
         <h1 className="font-bold text-2xl text-zinc-800">Ordens de Serviço</h1>
         <CreateServiceOrderModal />

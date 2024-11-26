@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# OSCEL
 
-## Getting Started
+## Visão Geral
 
-First, run the development server:
+Projeto feito para facilitar o gerenciamento de prestadores de serviço, gerando contratos das guias, calculo de custo e gerenciamento de funcionários.
+
+## Documentação
+
+A documentação completa do projeto está disponível em formato PDF no repositório. (feita pelo [Leonardo Fajoli](lhttps://github.com/LFormigon))
+
+[📄 Acesse a Documentação](./docs/oscel.pdf)
+
+## Tecnologias Utilizadas
+
+- **Linguagem de Programação:** TypeScript
+- **Frameworks e Bibliotecas:** Next.js, NestJS, NextUI
+- **Banco de Dados:** SQLite
+- **Ferramentas de Desenvolvimento:** Turborepo
+
+## Arquitetura do Projeto
+
+O projeto possui um **frontend** e um **backend**, ambos organizados dentro de um **monorepo** para facilitar o gerenciamento e a integração entre os serviços.
+O Frontend utiliza os padrões estabelecidos pela Vercel para o framework NextJS na sua verão 14.
+O Backend construído com NestJS conta com uma arquitetura monólito, porem usando pattern de construção de software orientado a objetos, como inversão de dependência, Decorators, Builder e Singletons.
+
+- [Singleton](./apps/api/src/shared/services/prisma/prisma.service.ts)
+- [Builder](./apps/api/src/shared/services/mail.service.ts)
+- [Decorators](./apps/api/src/decorators/is-public.decorator.ts)
+
+## Desenvolvendo
+
+Para fazer o desenvolvimento, basta utilizar a versão **20** ou posterior do Nodejs, e rodar os seguinte comandos:
+
+```bash
+npm install
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Apenas com esses 2 comandos, o Turborepo ja ira rodar possíveis atualizações no banco de dados, subir o servidor do backend e frontend.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Geração de contrato
+- Dashboard
+- Gestão de funcionários
 
-## Learn More
+## Contribuidores
 
-To learn more about Next.js, take a look at the following resources:
+Agradecimentos especiais aos contribuidores que ajudaram no desenvolvimento deste projeto:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Victor Nathan](https://github.com/VictorNAGomes)
+- [Marcelo Magalhães](https://github.com/Marcelo-maga)
+- [Leonardo Fajoli](https://github.com/LFormigon)
+- [Luis Modesto](https://github.com/LuisFelipeMod)
